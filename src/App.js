@@ -14,16 +14,17 @@ function App() {
     { username: 'Roger', message: 'Sounds good -- see you there' }
   ];
 
-
   const [username, setUsername] = useState('Test user');
   const [messageInput, setMessageInput] = useState('New Chat');
   const [chatLog, setChatLog] = useState(testChatLog);
 
+  const onChange = (evt) => setMessageInput(evt.target.value);
+
   return (
     <div className="chat-container">
       <Username username={username} />
-      <ChatLog chatLog={chatLog} />
-      <MessageInput messageInput={messageInput} />
+      <ChatLog chatLog={chatLog} username={username}/>
+      <MessageInput messageInput={messageInput} onChange={onChange} />
     </div>
   );
 }
