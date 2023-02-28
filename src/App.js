@@ -1,30 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Username from './Username';
 import MessageInput from './MessageInput';
 import ChatLog from './ChatLog';
 import './App.css';
 
-function App() {
+function App(props) {
 
-  const testChatLog = [
-    { username: 'Roger', message: 'Are you going to the basketball game tonight?' },
-    { username: 'David', message: 'Yes I am... what are you doing after the game?' },
-    { username: 'Roger', message: 'Going home... what about you?' },
-    { username: 'David', message: "I'm going to Denny's - you want to go too?" },
-    { username: 'Roger', message: 'Sounds good -- see you there' }
-  ];
+  useEffect(() => {
+    props.firebase.database().ref('chatLog').on('value', snapshot => {
+      let items = snapshot.val();
+      if (items) {
+        items = Object.values(items);
+      } else {
+        items = [];
+      }
+      setChatLog(items);
+    })
+  }, [props.firebase])
 
   const [username, setUsername] = useState('Test user');
   const [messageInput, setMessageInput] = useState('New Chat');
-  const [chatLog, setChatLog] = useState(testChatLog);
+  const [chatLog, setChatLog] = useState([]);
 
   const onChange = (evt) => setMessageInput(evt.target.value);
+
+  const onSubmit = function(evt) {
+    evt.preventDefault();
+    console.log('Submitted!');
+      }
+  
 
   return (
     <div className="chat-container">
       <Username username={username} />
       <ChatLog chatLog={chatLog} username={username}/>
-      <MessageInput messageInput={messageInput} onChange={onChange} />
+      <MessageInput messageInput={messageInput} onChange={onChange} onSubmit={onSubmit}/>
     </div>
   );
 }
