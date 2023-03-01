@@ -4,6 +4,14 @@
   box-sizing: border-box;
 }
 
+.login-page {
+  text-align: center;
+  margin-top: 100px;
+  padding: 10px;
+  font-size: 30px;
+  
+}
+
 .chat-container {
   display: flex;
   flex-direction: column;
